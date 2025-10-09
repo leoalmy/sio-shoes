@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du Produits{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <br>
+        <h1>{{ product.name}}</h1>
+        <br><br>
+        {% include 'layouts/_flash_message.html.twig' %}
+        <table class="table custom-table">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ product.id }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ product.description }}</td>
+                </tr>
+                <tr>
+                    <th>Prix</th>
+                    <td>{{ product.price }}€</td>
+                </tr>
+                <tr>
+                    <th>Stock</th>
+                    <td>
+                        {% if product.stock > 0 %}
+                            <span class="badge bg-success user-btn">{{ product.stock }}</span>
+                        {% else %}
+                            <span class="badge bg-danger user-btn">Rupture de stock</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Image</th>
+                    <td><img src="{{ asset('uploads/images/' ~ product.image) }}" alt="{{ product.name }}" class="img-thumbnail" style="max-width: 200px;"></td>
+            </tbody>
+        </table>
+
+        <div class="d-inline-block">
+            <a href="{{ path('app_product_stock_add_history', {'id': product.id}) }}" class="user-btn btn btn-success">Afficher l'historique des ajouts du stock</a>
+            <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="user-btn btn btn-primary">Modifier</a>
+            <a href="{{ path('app_product_index') }}" class="user-btn btn btn-secondary">Retour à la liste</a>
+            <div class="d-inline-block">
+                {{ include('product/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

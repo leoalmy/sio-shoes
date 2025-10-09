@@ -1,0 +1,32 @@
+{{ form_start(form) }}
+
+<div class="mb-3">
+    <label for="{{ form.name.vars.id }}" class="form-label">Nom de la ville</label>
+    {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<div class="mb-3">
+    <label for="{{ form.zipCode.vars.id }}" class="form-label">Code postal</label>
+    {{ form_widget(form.zipCode, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<div class="mb-3">
+    <label for="{{ form.shippingCost.vars.id }}" class="form-label">Frais de livraison (€)</label>
+    {{ form_widget(form.shippingCost, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<div class="text-end">
+    {% if button_label == 'Mettre à jour' %}
+        <button class="btn btn-warning" type="submit"
+                onclick="return confirm('Êtes-vous sûr de vouloir modifier cette ville ?');">
+            {{ button_label|default('Enregistrer') }}
+        </button>
+    {% else %}
+        <button class="btn btn-success" type="submit"
+                onclick="return confirm('Êtes-vous sûr de vouloir créer cette ville ?');">
+            {{ button_label|default('Enregistrer') }}
+        </button>
+    {% endif %}
+</div>
+
+{{ form_end(form) }}

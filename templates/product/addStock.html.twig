@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout de produits au stock{% endblock %}
+
+{% block body %}
+<div class="container">
+    <br>
+        <h1>Ajouter au stock de {{ product.name }}</h1>
+    <br>
+
+    {% include 'layouts/_flash_message.html.twig' %}
+
+    {{ form_start(form) }}
+
+        <label for="">Quantité :</label>
+        {{ form_widget(form.qte, { 'attr': { 'class': 'form-control' } }) }}
+        <br>
+
+        <button class="btn btn-success">
+            {{ button_label|default('Enregistrer') }}
+        </button>
+
+    {{ form_end(form) }}
+</div>
+{% endblock %}

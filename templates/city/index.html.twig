@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Villes{% endblock %}
+
+{% block body %}
+<div class="container">
+    <br>
+    <h1>Liste des villes</h1>
+    <br><br>
+    {% include 'layouts/_flash_message.html.twig' %}
+
+    <!-- Bouton ajouter -->
+    <a href="{{ path('app_city_new') }}" class="user-btn btn btn-primary mb-3">Ajouter une ville</a>
+
+    <table class="table custom-table">
+        {% if cities is empty %}
+            <div class="alert alert-info" role="alert">
+                Aucune ville trouvée.
+            </div>
+        {% else %}
+        <tr>
+            <th>Id</th>
+            <th>Nom</th>
+            <th>Code postal</th>
+            <th>Frais de livraison</th>
+            <th>Actions</th>
+        </tr>
+        {% for city in cities %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ city.name }}</td>
+                <td>{{ city.zipCode }}</td>
+                <td>{{ city.shippingCost }} €</td>
+                <td>
+                    <a href="{{ path('app_city_show', {'id': city.id}) }}" class="btn btn-info user-btn">Afficher</a>
+                    <a href="{{ path('app_city_edit', {'id': city.id}) }}" class="btn btn-warning user-btn">Modifier</a>
+                    <a href="{{ path('app_city_delete', {'id': city.id}) }}" 
+                       class="btn btn-danger user-btn"
+                       onclick="return confirm('Es-tu sûr de vouloir supprimer cette ville ?');">
+                        Supprimer
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        {% endif %}
+    </table>
+</div>
+{% endblock %}

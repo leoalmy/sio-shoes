@@ -1,0 +1,11 @@
+{% extends '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig' %}
+
+{% block pagination %}
+    {% if pageCount > 1 %}
+        <nav aria-label="Pagination">
+            <ul class="pagination justify-content-center">
+                {{ parent() }}
+            </ul>
+        </nav>
+    {% endif %}
+{% endblock %}

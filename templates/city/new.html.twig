@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Ville{% endblock %}
+
+{% block body %}
+    <h1>Ajouter une ville</h1>
+
+    {{ include('city/_form.html.twig', { 'button_label': 'Créer' }) }}
+
+    <a href="{{ path('app_city_index') }}">back to list</a>
+{% endblock %}

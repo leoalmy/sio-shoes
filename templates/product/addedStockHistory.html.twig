@@ -1,0 +1,36 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Historique des stocks ajoutés{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Historique des stocks ajoutés</h1>
+
+        <table class="table table-striped mt-4 custom-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Produit</th>
+                    <th>Quantité ajoutée</th>
+                    <th>Date d'ajout</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for productAdded in productsAdded %}
+                    <tr>
+                        <td>{{ stock.id }}</td>
+                        <td>{{ stock.product.name }}</td>
+                        <td>{{ stock.quantityAdded }}</td>
+                        <td>{{ stock.addedAt|date('d/m/Y H:i') }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">Aucun historique de stock ajouté trouvé.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_product_index') }}" class="btn btn-secondary mt-3">Retour à la liste des produits</a>
+    </div>
+{% endblock %}

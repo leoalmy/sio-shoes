@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des produits{% endblock %}
+
+{% block body %}
+    <style>
+        .custom-table th, .custom-table td {
+            vertical-align: middle;
+        }
+
+        .table th a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .table th a:hover {
+            color: #0d6efd;
+        }
+
+
+    </style>
+    <div class="container">
+        <br>
+        <h1>Liste des produits</h1>
+        <br><br>
+        {% include 'layouts/_flash_message.html.twig' %}
+        <a href="{{ path('app_product_new') }}" class="user-btn btn btn-primary mb-3">Ajouter un produit</a>
+
+        {% if products is empty %}
+            <div class="alert alert-info" role="alert">
+                Aucun produit trouvé.
+            </div>
+        {% else %}
+        <table class="table custom-table">
+            <thead class="table-light">
+                <tr>
+                    <th>
+                        {{ knp_pagination_sortable(products, 'Id', 'p.id') }}
+                        {% if products.isSorted('p.id') %}
+                            {% if products.getDirection() == 'asc' %}
+                                <i class="bi bi-caret-up-fill text-primary"></i>
+                            {% else %}
+                                <i class="bi bi-caret-down-fill text-primary"></i>
+                            {% endif %}
+                        {% endif %}
+                    </th>
+                    <th>
+                        {{ knp_pagination_sortable(products, 'Nom', 'p.name') }}
+                        {% if products.isSorted('p.name') %}
+                            {% if products.getDirection() == 'asc' %}
+                                <i class="bi bi-caret-up-fill text-primary"></i>
+                            {% else %}
+                                <i class="bi bi-caret-down-fill text-primary"></i>
+                            {% endif %}
+                        {% endif %}
+                    </th>
+                    <th>
+                        {{ knp_pagination_sortable(products, 'Prix', 'p.price') }}
+                        {% if products.isSorted('p.price') %}
+                            {% if products.getDirection() == 'asc' %}
+                                <i class="bi bi-caret-up-fill text-primary"></i>
+                            {% else %}
+                                <i class="bi bi-caret-down-fill text-primary"></i>
+                            {% endif %}
+                        {% endif %}
+                    </th>
+                    <th>
+                        {{ knp_pagination_sortable(products, 'Stock', 'p.stock') }}
+                        {% if products.isSorted('p.stock') %}
+                            {% if products.getDirection() == 'asc' %}
+                                <i class="bi bi-caret-up-fill text-primary"></i>
+                            {% else %}
+                                <i class="bi bi-caret-down-fill text-primary"></i>
+                            {% endif %}
+                        {% endif %}
+                    </th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for product in products %}
+                <tr>
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.price }}€</td>
+                    <td>
+                        {% if product.stock > 0 %}
+                            <span class="badge bg-success user-btn">{{ product.stock }}</span>
+                        {% else %}
+                            <span class="badge bg-danger user-btn">Rupture de stock</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <img src="{{ asset('uploads/images/' ~ product.image) }}" alt="{{ product.name }}" class="img-thumbnail" style="max-width: 100px;">
+                    </td>
+                    <td>
+                        <a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-info">Afficher</a>
+                        <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-warning">Modifier</a>
+                        {{ include('product/_delete_form.html.twig') }}
+                        <a href="{{ path('app_product_stock_add', {'id': product.id}) }}" class="btn btn-success">Ajouter au stock</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-center">
+            {{ knp_pagination_render(products) }}
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}
