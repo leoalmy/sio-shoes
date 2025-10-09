@@ -35,7 +35,7 @@
               {% if not loop.first %}
                 <li><hr class="dropdown-divider"></li>
               {% endif %}
-              <li><a class="dropdown-item" href="{{ path('app_home_filter', {'id': category.id}) }}">{{ category.name }}</a></li>
+              <li><a class="dropdown-item">{{ category.name }}</a></li>
               <li><hr class="dropdown-divider"></li>
               {% for subCategory in category.subCategories %}
                 <li><a class="dropdown-item" href="{{ path('app_home_filter', {'id': subCategory.id}) }}"> {{ subCategory.name }}</a></li>
@@ -52,7 +52,7 @@
 
           <!-- Bouton Panier (toujours visible, à gauche du dropdown) -->
           <li class="nav-item me-2">
-              <a class="btn btn-outline-primary position-relative" href="{{ path('app_cart') }}">
+              <a class="btn btn-outline-warning position-relative" href="{{ path('app_cart') }}">
                   <i class="bi bi-cart-fill"></i> Panier
                   {% if app.session.get('cart') is not empty %}
                       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -64,11 +64,19 @@
 
           <!-- Dropdown utilisateur -->
           <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
-                data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="bi bi-person-circle"></i>
-                  Mon Compte
-              </a>
+              {% if is_granted('ROLE_USER') %}
+                  <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="bi bi-person-circle"></i>
+                      {{ app.user.firstName }}.{{ app.user.lastName|first|upper }}
+                  </a>
+              {% else %}
+                  <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="bi bi-person-circle"></i>
+                      Mon Compte
+                  </a>
+              {% endif %}
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                   {% if is_granted('ROLE_USER') %}
                       <li><a class="dropdown-item" href="#">Profil</a></li>
