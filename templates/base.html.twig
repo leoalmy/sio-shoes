@@ -16,10 +16,17 @@
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
-    <body>
+    <body class="d-flex flex-column min-vh-100">
         {% block navbar %}
             {% include 'layouts/nav.html.twig' %}
         {% endblock %}
-        {% block body %}{% endblock %}
+
+        <main class="flex-grow-1">
+            {% block body %}{% endblock %}
+        </main>
+
+        {% block footer %}
+            {% include 'layouts/footer.html.twig' %}
+        {% endblock %}
     </body>
 </html>

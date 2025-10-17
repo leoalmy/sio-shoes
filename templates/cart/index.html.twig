@@ -79,6 +79,15 @@
                 </div>
             {% endif %}
         </div>
+        <div class="card-footer text-end">
+            <a href="{{ path('app_home') }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left-circle"></i> Continuer vos achats
+            </a>
+            {% if items is not empty %}
+                <a data-turbo="false" href="{{ path('app_order') }}" class="btn btn-primary">
+                    <i class="bi bi-credit-card"></i> Valider et Payer
+                </a>
+            {% endif %}
     </div>
 </div>
 {% endblock %}

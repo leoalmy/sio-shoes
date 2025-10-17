@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande{% endblock %}
+
+{% block body %}
+<div class="container">
+    <br>
+    <h1>Commande</h1>
+    <br>
+
+    <div class="col-4">
+        <h4>Montant total : {{ total|number_format(2, '.', ',') }} €</h4>
+        <strong>Frais de livraison : <span id="shipping-cost">0.00 €</span></strong>
+        <h3 class="mt-3">Total à payer : <span id="total-cost">0.00 €</span></h3>
+    </div>
+
+    {{ include('order/_form.html.twig') }}
+    <br>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const citySelect = document.getElementById('order_form_city');
+    const shippingCostDisplay = document.getElementById('shipping-cost');
+    const shippingCostForm = document.getElementById('order_form_shippingPrice');
+    const totalCostDisplay = document.getElementById('total-cost');
+
+    // ✅ total initial
+    if (totalCostDisplay) {
+        totalCostDisplay.textContent = "{{ total|number_format(2, '.', ',') }} €";
+    }
+
+    function updateShippingCost(city) {
+        fetch('{{ path('get_shipping_cost') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: new URLSearchParams({ city: city })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const shipping = parseFloat(data.shippingCost);
+            shippingCostDisplay.textContent = shipping.toFixed(2) + ' €';
+            if (shippingCostForm) {
+                shippingCostForm.value = shipping;
+            }
+            totalCostDisplay.textContent = (({{ total }}) + shipping).toFixed(2) + ' €';
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des frais de livraison :', error);
+        });
+    }
+
+    if (citySelect) {
+        citySelect.addEventListener('change', function () {
+            updateShippingCost(citySelect.value);
+        });
+
+        // Initialiser le coût si une ville est présélectionnée
+        if (citySelect.value) {
+            updateShippingCost(citySelect.value);
+        }
+    }
+});
+</script>
+{% endblock %}

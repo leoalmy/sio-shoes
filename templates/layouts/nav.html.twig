@@ -1,14 +1,15 @@
-<nav class="navbar navbar-expand-lg" style="background-color:rgb(0, 75, 128);" data-bs-theme="dark">
+<nav class="navbar navbar-expand-lg site-bar" data-bs-theme="dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{{ path('app_home') }}">Sio Shoes</a>
+    <img 
+    src="{{ asset('uploads/images/logo_navbar.png') }}" 
+    alt="Logo SIO Shoes" 
+    class="navbar-logo d-inline-block align-text-top me-2">
+    <a class="navbar-brand fw-bold" href="{{ path('app_home') }}">SIO Shoes</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}">Home</a>
-        <li>
         {% if is_granted('ROLE_EDITOR') %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -19,6 +20,7 @@
             <li><a class="dropdown-item" href="{{ path('app_sub_category_index') }}">Sous-catégories</a></li>
             <li><a class="dropdown-item" href="{{ path('app_product_index') }}">Produits</a></li>
             <li><a class="dropdown-item" href="{{ path('app_city_index') }}">Villes</a></li>
+            <li><a class="dropdown-item" href="{{ path('editor_orders') }}">Commandes</a></li>
             {% if is_granted('ROLE_ADMIN') %}
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="{{ path('app_user') }}">Utilisateurs</a></li>
@@ -52,7 +54,7 @@
 
           <!-- Bouton Panier (toujours visible, à gauche du dropdown) -->
           <li class="nav-item me-2">
-              <a class="btn btn-outline-warning position-relative" href="{{ path('app_cart') }}">
+              <a class="user-btn btn btn-outline-warning position-relative" href="{{ path('app_cart') }}">
                   <i class="bi bi-cart-fill"></i> Panier
                   {% if app.session.get('cart') is not empty %}
                       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">

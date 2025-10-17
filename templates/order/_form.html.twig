@@ -1,0 +1,50 @@
+{{ form_start(form, {'attr': {'class': 'order-form mt-4'}}) }}
+
+<div class="card order-card shadow-sm p-4 mb-4">
+    <h3 class="mb-3 text-center text-primary fw-bold">Informations de livraison</h3>
+
+    <div class="mb-3">
+        {{ form_label(form.firstName, 'Prénom', {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+        {{ form_widget(form.firstName, {'attr': {'class': 'form-control', 'placeholder': 'Votre prénom'}}) }}
+        <div class="text-danger small">{{ form_errors(form.firstName) }}</div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.lastName, 'Nom', {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+        {{ form_widget(form.lastName, {'attr': {'class': 'form-control', 'placeholder': 'Votre nom'}}) }}
+        <div class="text-danger small">{{ form_errors(form.lastName) }}</div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.phoneNumber, 'Téléphone', {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+        {{ form_widget(form.phoneNumber, {'attr': {'class': 'form-control', 'placeholder': '06 12 34 56 78'}}) }}
+        <div class="text-danger small">{{ form_errors(form.phoneNumber) }}</div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.adress, 'Adresse', {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+        {{ form_widget(form.adress, {'attr': {'class': 'form-control', 'placeholder': 'Ex : 12 rue du Marché'}}) }}
+        <div class="text-danger small">{{ form_errors(form.adress) }}</div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.city, 'Ville', {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+        {{ form_widget(form.city, {'attr': {'class': 'form-select'}}) }}
+        <div class="text-danger small">{{ form_errors(form.city) }}</div>
+    </div>
+
+    {# 🟢 Champ caché pour le JS #}
+    {{ form_widget(form.shippingPrice, {'attr': {'type': 'hidden'}}) }}
+
+    <div class="text-center mt-4">
+        <button class="user-btn btn btn-dark px-4 py-2" onclick="window.location.href='{{ path('app_cart') }}'">
+            <i class="bi bi-arrow-left"></i> Retour
+        </button>
+        &nbsp;
+        <button class="user-btn btn btn-primary px-4 py-2">
+            <i class="bi bi-credit-card"></i> {{ button_label|default('Payer') }}
+        </button>
+    </div>
+</div>
+
+{{ form_end(form) }}

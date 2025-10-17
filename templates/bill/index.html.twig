@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation de commande n°{{ order.id }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            color: #222;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        h1, h2, h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header img {
+            width: 80px;
+        }
+
+        .company {
+            text-align: right;
+            font-size: 13px;
+            color: #666;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f3f3f3;
+        }
+
+        .totals {
+            text-align: right;
+            margin-top: 15px;
+            font-size: 15px;
+        }
+
+        .totals strong {
+            font-size: 16px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            margin-top: 25px;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+
+        .status {
+            text-align: right;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .delivered { color: #28a745; }
+        .pending { color: #d39e00; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <img src="{{ absolute_url(asset('uploads/images/logo.png')) }}" alt="Logo SIO Shoes">
+        <div class="company">
+            <strong>SIO Shoes</strong><br>
+            12 Rue des Chaussures<br>
+            80000 Amiens, France<br>
+            contact@sio-shoes.fr
+        </div>
+    </div>
+
+    <h2>Confirmation de commande</h2>
+    <p>
+        Bonjour {{ order.firstName }} {{ order.lastName }},<br><br>
+        Nous avons bien reçu votre commande. Merci pour votre achat ! 🎉
+    </p>
+
+    <div class="status">
+        {% if order.isDelivered %}
+            <span class="delivered">Commande livrée</span>
+        {% else %}
+            <span class="pending">En attente de livraison</span>
+        {% endif %}
+    </div>
+
+    <h3>Commande n°{{ order.id }} du {{ order.createdAt|date("d/m/Y à H:i") }}</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nom produit</th>
+                <th>Prix unitaire</th>
+                <th>Quantité</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in order.orderProducts %}
+                <tr>
+                    <td>{{ product.product.name }}</td>
+                    <td>{{ product.product.price|number_format(2, ',', ' ') }} €</td>
+                    <td>{{ product.qte }}</td>
+                    <td>{{ (product.product.price * product.qte)|number_format(2, ',', ' ') }} €</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="totals">
+        Frais de port : {{ order.shippingPrice|number_format(2, ',', ' ') }} €<br>
+        <strong>Total à payer : {{ order.totalPrice|number_format(2, ',', ' ') }} €</strong>
+    </div>
+
+    <div class="footer">
+        Merci pour votre confiance 💙 — © {{ "now"|date("Y") }} SIO Shoes
+    </div>
+</div>
+</body>
+</html>

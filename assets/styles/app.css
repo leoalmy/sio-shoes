@@ -169,3 +169,19 @@ body {
     right: -3rem; /* décale à droite */
 }
 
+.site-bar {
+    background-color: rgb(0, 75, 128);
+    color: white;
+}
+
+.navbar-logo {
+    height: 40px;       /* taille visible */
+    width: auto;        /* garde les proportions */
+    object-fit: contain;
+}
+
+@media (max-width: 768px) {
+    .navbar-logo {
+        height: 30px;   /* plus petit sur mobile */
+    }
+}

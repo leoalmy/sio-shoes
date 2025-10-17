@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des commandes{% endblock %}
+
+{% block body %}
+<div class="container">
+    <br>
+    <h1>Liste des commandes</h1>
+    <br><br>
+
+    {% include 'layouts/_flash_message.html.twig' %}
+
+    <table class="table custom-table align-middle">
+        {% if orders is empty %}
+            <div class="alert alert-info" role="alert">
+                Aucune commande trouvée.
+            </div>
+        {% else %}
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Ville</th>
+                    <th>Téléphone</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td><a href="#order-{{ order.id }}">{{ order.id }}</a></td>
+                    <td>{{ order.firstName }}</td>
+                    <td>{{ order.lastName }}</td>
+                    <td>{{ order.city ? order.city.name : '—' }} ( {{ order.city.zipCode }} )</td>
+                    <td>{{ order.phoneNumber }}</td>
+                    <td class="align-middle">
+                        <div class="d-flex align-items-center gap-2">
+                            <form method="post"
+                                action="{{ path('editor_order_delete', { id: order.id }) }}"
+                                onsubmit="return confirm('Voulez-vous vraiment supprimer cette commande ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete_order_' ~ order.id) }}">
+                                <button class="user-btn btn btn-sm btn-danger">Supprimer</button>
+                            </form>
+
+                            <a href="{{ path('app_bill', { id: order.id }) }}"
+                                class="user-btn btn btn-sm btn-primary">Imprimer facture</a>
+                            {% if not order.isDelivered %}
+                                <a href="{{ path('editor_order_is_delivered_update', { id: order.id }) }}"
+                                class="user-btn btn btn-sm btn-warning text-dark">
+                                    En cours
+                                </a>
+                            {% else %}
+                                <a class="user-btn btn btn-sm btn-success">Livré</a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        {% endif %}
+    </table>
+
+    <br>
+
+    {% for order in orders %}
+        <h4 id="order-{{ order.id }}" class="mt-4">
+            Commande n°{{ order.id }}
+        </h4>
+
+        <div class="d-flex align-items-center gap-2 mb-2">
+            {% if order.isDelivered == true %}
+                <span class="badge bg-success">Livrée</span>
+            {% else %}
+                <span class="badge bg-warning text-dark">En cours</span>
+            {% endif %}
+
+            <span class="badge bg-info text-dark">Produits commandés :</span>
+        </div>
+
+        <table class="table mt-2 custom-table align-middle">
+            <thead>
+                <tr>
+                    <th>Image produit</th>
+                    <th>Nom produit</th>
+                    <th>Prix unitaire</th>
+                    <th>Quantité</th>
+                    <th>Prix Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in order.orderProducts %}
+                    <tr>
+                        <td>
+                            {% if product.product.image %}
+                                <img src="{{ asset('uploads/images/' ~ product.product.image) }}" alt="{{ product.product.name }}" style="width: 50px; height: auto;">
+                            {% else %}
+                                <span class="text-muted">Aucune image</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ product.product.name }}</td>
+                        <td>{{ product.product.price|number_format(2, ',', ' ') }} €</td>
+                        <td>{{ product.qte }}</td>
+                        <td>{{ (product.product.price * product.qte)|number_format(2, ',', ' ') }} €</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-muted">Aucun produit pour cette commande</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+</div>
+{% endblock %}
