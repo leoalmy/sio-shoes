@@ -29,3 +29,6 @@
 .env
 .htaccess
 /node_modules
+
+# ignore info.json
+*.json
